@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>LinguaAO — Master English</title>
+  <meta name="description" content="Aprende Inglês de forma rápida e divertida, com IA, lições e jogos interativos." />
+  <meta name="theme-color" content="#080612" />
+  <link rel="manifest" href="manifest.json" />
+  <link rel="icon" href="assets/icon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<!-- ===== AURORA BG ===== -->
+<div class="aurora" id="global-aurora" aria-hidden="true"></div>
+
+<!-- ===== SPLASH ===== -->
+<div id="splash" class="screen">
+  <div class="aurora"></div>
+  <div class="splash-logo">
+    <div class="splash-icon">🗣</div>
+    <h1>LinguaAO</h1>
+    <p>Master English</p>
+    <div class="splash-loader"></div>
+  </div>
+</div>
+
+<!-- ===== ONBOARDING ===== -->
+<div id="onboarding" class="screen hidden">
+  <div class="aurora"></div>
+  <div class="onboard-slides">
+
+    <div class="onboard-slide active" data-slide="0">
+      <div class="onboard-art">
+        <div class="flag-art">
+          <div class="flag-circle">🇬🇧</div>
+          <div class="flag-ring"></div>
+          <div class="flag-ring2"></div>
+          <div class="bubbles">
+            <span class="bubble b1">Hello!</span>
+            <span class="bubble b2">Good morning!</span>
+            <span class="bubble b3">How are you?</span>
+          </div>
+        </div>
+      </div>
+      <h2>Bem-vindo ao LinguaAO</h2>
+      <p>A plataforma para aprender <strong>Inglês</strong> com IA, jogos e lições estruturadas. Aprende 3× mais rápido! 🚀</p>
+    </div>
+
+    <div class="onboard-slide" data-slide="1">
+      <div class="onboard-art">
+        <div class="feature-icons">
+          <div class="fi"><span>🤖</span><small>IA Conversacional</small></div>
+          <div class="fi"><span>📚</span><small>Lições por Nível</small></div>
+          <div class="fi"><span>🎮</span><small>Gamificação</small></div>
+          <div class="fi"><span>🔊</span><small>Pronúncia Real</small></div>
+        </div>
+      </div>
+      <h2>Aprende 3× mais rápido</h2>
+      <p>Combina método científico com IA generativa para praticar conversação real a qualquer hora do dia.</p>
+    </div>
+
+    <div class="onboard-slide" data-slide="2">
+      <div class="onboard-art">
+        <div class="hero-graphic">
+          <div class="target-icon">🎯</div>
+          <p style="margin-top:1.25rem;color:var(--text2);font-size:0.9rem;line-height:1.6">Define a tua meta e começa hoje.<br>O teu inglês vai surpreender-te.</p>
+        </div>
+      </div>
+      <h2>Pronto para começar?</h2>
+      <p>Escolhe o teu nível e começa. É grátis, divertido e funciona.</p>
+    </div>
+
+  </div>
+
+  <div class="onboard-dots">
+    <span class="dot active"></span>
+    <span class="dot"></span>
+    <span class="dot"></span>
+  </div>
+  <div class="onboard-actions">
+    <button id="onboard-next" class="btn-primary"><span>Continuar</span></button>
+    <button id="onboard-skip" class="btn-ghost">Saltar</button>
+  </div>
+</div>
+
+<!-- ===== SETUP ===== -->
+<div id="setup" class="screen hidden">
+  <div class="aurora"></div>
+  <div class="setup-inner">
+    <h2>Vamos começar 👋</h2>
+    <p class="setup-sub">Só precisamos de dois detalhes.</p>
+
+    <h3>O teu nome</h3>
+    <input type="text" id="name-input" placeholder="Como te chamas?" maxlength="30" autocomplete="off" />
+
+    <h3>O teu nível de Inglês</h3>
+    <div class="level-selector">
+      <button class="level-btn active" data-level="beginner">
+        <span class="level-icon">🌱</span>
+        <span class="level-info">
+          <span class="level-name">Iniciante</span>
+          <span class="level-desc">Começo do zero ou quase</span>
+        </span>
+        <span class="level-check">✓</span>
+      </button>
+      <button class="level-btn" data-level="intermediate">
+        <span class="level-icon">🌿</span>
+        <span class="level-info">
+          <span class="level-name">Intermédio</span>
+          <span class="level-desc">Já sei o básico, quero melhorar</span>
+        </span>
+        <span class="level-check">✓</span>
+      </button>
+      <button class="level-btn" data-level="advanced">
+        <span class="level-icon">🌳</span>
+        <span class="level-info">
+          <span class="level-name">Avançado</span>
+          <span class="level-desc">Falo bem, quero ser fluente</span>
+        </span>
+        <span class="level-check">✓</span>
+      </button>
+    </div>
+
+    <button id="setup-done" class="btn-primary" style="margin-top:2rem;width:100%"><span>Começar a Aprender 🚀</span></button>
+  </div>
+</div>
+
+<!-- ===== MAIN APP ===== -->
+<div id="app" class="screen hidden">
+
+  <header class="topbar">
+    <div class="topbar-left">
+      <div class="avatar" id="user-avatar">A</div>
+      <div class="topbar-info">
+        <span id="user-greeting">Olá!</span>
+        <span class="streak-badge" id="streak-display">🔥 0 dias</span>
+      </div>
+    </div>
+    <div class="topbar-right">
+      <div class="xp-pill" id="xp-display">⚡ 0 XP</div>
+      <button class="icon-btn" id="settings-btn" title="Configurações">⚙️</button>
+    </div>
+  </header>
+
+  <main class="content">
+
+    <!-- HOME -->
+    <div class="tab-content active" id="tab-home">
+      <div class="home-hero">
+        <h2 id="home-title">Vamos começar! <span>🚀</span></h2>
+        <p id="home-sub">Tens <span id="lessons-left">5</span> lições disponíveis.</p>
+      </div>
+
+      <div class="daily-goal-card">
+        <div class="dg-header">
+          <span>🎯 Meta diária</span>
+          <span id="goal-progress-text">0 / 20 XP</span>
+        </div>
+        <div class="progress-bar">
+          <div class="progress-fill" id="goal-bar" style="width:0%"></div>
+        </div>
+      </div>
+
+      <div class="section-title">Continuar</div>
+      <div id="continue-cards"></div>
+
+      <div class="section-title">Progresso</div>
+      <div id="lang-progress-grid"></div>
+
+      <div class="section-title">Conquistas</div>
+      <div class="badges-row" id="badges-row"></div>
+
+      <div class="section-title">Frase do dia</div>
+      <div class="phrase-card" id="phrase-card"></div>
+    </div>
+
+    <!-- LESSONS -->
+    <div class="tab-content" id="tab-lessons">
+      <h3 class="tab-heading">Lições</h3>
+      <div class="lessons-path" id="lessons-path"></div>
+    </div>
+
+    <!-- AI CHAT -->
+    <div class="tab-content" id="tab-ai">
+      <div class="ai-header">
+        <div class="ai-avatar">🤖</div>
+        <div>
+          <h3>Professor IA</h3>
+          <p class="ai-status">Online · Pronto para conversar</p>
+        </div>
+      </div>
+      <div class="chat-messages" id="chat-messages">
+        <div class="chat-msg bot">
+          <div class="msg-bubble">
+            Hello! I'm your AI English teacher. 👋<br><br>
+            I can help you practise conversation, explain grammar, translate phrases or create exercises.<br><br>
+            <strong>Where shall we start?</strong>
+          </div>
+        </div>
+      </div>
+      <div class="chat-suggestions" id="chat-suggestions">
+        <button class="suggestion-chip" onclick="sendSuggestion('Como se diz olá de formas diferentes em Inglês?')">Saudações em Inglês</button>
+        <button class="suggestion-chip" onclick="sendSuggestion('Practice a basic English conversation with me')">Praticar conversa</button>
+        <button class="suggestion-chip" onclick="sendSuggestion('Explain the difference between: I am, I was, I will be')">Explicar gramática</button>
+        <button class="suggestion-chip" onclick="sendSuggestion('Correct my English: I goed to school yesterday')">Corrigir frase</button>
+      </div>
+      <div class="chat-input-row">
+        <input type="text" id="chat-input" placeholder="Escreve aqui em Português ou Inglês…" />
+        <button id="chat-send" class="send-btn">➤</button>
+        <button id="chat-voice" class="voice-btn" title="Falar">🎤</button>
+      </div>
+    </div>
+
+    <!-- PRACTICE -->
+    <div class="tab-content" id="tab-practice">
+      <h3 class="tab-heading">Praticar</h3>
+      <div class="practice-grid">
+        <div class="practice-card" onclick="startGame('flashcard')">
+          <div class="pc-icon">🃏</div>
+          <div class="pc-title">Flashcards</div>
+          <div class="pc-desc">Memoriza vocabulário com repetição espaçada</div>
+          <div class="pc-xp">+5 XP/acerto</div>
+        </div>
+        <div class="practice-card" onclick="startGame('quiz')">
+          <div class="pc-icon">❓</div>
+          <div class="pc-title">Quiz</div>
+          <div class="pc-desc">Perguntas de escolha múltipla</div>
+          <div class="pc-xp">+10 XP/acerto</div>
+        </div>
+        <div class="practice-card" onclick="startGame('translate')">
+          <div class="pc-icon">🔄</div>
+          <div class="pc-title">Tradução</div>
+          <div class="pc-desc">Traduz frases PT → EN</div>
+          <div class="pc-xp">+15 XP/acerto</div>
+        </div>
+        <div class="practice-card" onclick="startGame('listen')">
+          <div class="pc-icon">👂</div>
+          <div class="pc-title">Escuta</div>
+          <div class="pc-desc">Ouve e escreve correctamente</div>
+          <div class="pc-xp">+12 XP/acerto</div>
+        </div>
+        <div class="practice-card" onclick="startGame('match')">
+          <div class="pc-icon">🧩</div>
+          <div class="pc-title">Emparelhar</div>
+          <div class="pc-desc">Associa palavra à tradução</div>
+          <div class="pc-xp">+8 XP/par</div>
+        </div>
+        <div class="practice-card" onclick="startGame('speak')">
+          <div class="pc-icon">🗣️</div>
+          <div class="pc-title">Falar</div>
+          <div class="pc-desc">Pratica pronúncia com voz</div>
+          <div class="pc-xp">+20 XP</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PROFILE -->
+    <div class="tab-content" id="tab-profile">
+      <div class="profile-header">
+        <div class="profile-avatar" id="profile-avatar-big">A</div>
+        <h2 id="profile-name">Estudante</h2>
+        <p id="profile-level-tag" class="level-tag">🌱 Iniciante</p>
+      </div>
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-num" id="stat-xp">0</div>
+          <div class="stat-label">XP Total</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num" id="stat-streak">0</div>
+          <div class="stat-label">Dias seguidos</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num" id="stat-lessons">0</div>
+          <div class="stat-label">Lições</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num" id="stat-words">0</div>
+          <div class="stat-label">Palavras</div>
+        </div>
+      </div>
+      <div class="section-title">Inglês</div>
+      <div id="profile-langs"></div>
+      <div class="section-title">Conquistas</div>
+      <div class="all-badges" id="all-badges"></div>
+      <button class="btn-danger" id="reset-btn" style="margin-top:1.75rem;width:100%">Reiniciar progresso</button>
+    </div>
+
+  </main>
+
+  <nav class="bottom-nav">
+    <button class="nav-tab active" data-tab="home">
+      <span class="nav-icon">🏠</span><span>Início</span>
+    </button>
+    <button class="nav-tab" data-tab="lessons">
+      <span class="nav-icon">📚</span><span>Lições</span>
+    </button>
+    <button class="nav-tab" data-tab="ai">
+      <span class="nav-icon">🤖</span><span>IA</span>
+    </button>
+    <button class="nav-tab" data-tab="practice">
+      <span class="nav-icon">🎮</span><span>Praticar</span>
+    </button>
+    <button class="nav-tab" data-tab="profile">
+      <span class="nav-icon">👤</span><span>Perfil</span>
+    </button>
+  </nav>
+</div>
+
+<!-- ===== LESSON PLAYER ===== -->
+<div id="lesson-player" class="screen hidden">
+  <div class="lp-header">
+    <button class="back-btn" id="lp-back">✕</button>
+    <div class="lp-progress-wrap">
+      <div class="lp-progress-bar">
+        <div class="lp-progress-fill" id="lp-fill"></div>
+      </div>
+    </div>
+    <div class="lp-xp-badge" id="lp-xp">+0 XP</div>
+  </div>
+  <div class="lp-content" id="lp-content"></div>
+  <div class="lp-actions" id="lp-actions"></div>
+</div>
+
+<!-- ===== GAME MODAL ===== -->
+<div id="game-modal" class="modal-overlay hidden">
+  <div class="modal-card">
+    <div class="modal-handle"></div>
+    <button class="modal-close" id="game-close">✕</button>
+    <div id="game-content"></div>
+  </div>
+</div>
+
+<!-- ===== SETTINGS MODAL ===== -->
+<div id="settings-modal" class="modal-overlay hidden">
+  <div class="modal-card">
+    <div class="modal-handle"></div>
+    <button class="modal-close" onclick="closeSettings()">✕</button>
+    <h3>⚙️ Configurações</h3>
+    <div class="settings-list">
+      <div class="setting-row">
+        <span>🔊 Som</span>
+        <label class="toggle"><input type="checkbox" id="sound-toggle" checked><span class="slider"></span></label>
+      </div>
+      <div class="setting-row">
+        <span>🌙 Modo escuro</span>
+        <label class="toggle"><input type="checkbox" id="dark-toggle" checked><span class="slider"></span></label>
+      </div>
+      <div class="setting-row">
+        <span>🔔 Notificações</span>
+        <label class="toggle"><input type="checkbox" id="notif-toggle"><span class="slider"></span></label>
+      </div>
+      <div class="setting-row">
+        <span>🗣️ Velocidade da voz</span>
+        <select id="voice-speed">
+          <option value="0.7">Lenta</option>
+          <option value="1" selected>Normal</option>
+          <option value="1.3">Rápida</option>
+        </select>
+      </div>
+      <div class="setting-row">
+        <span>🎯 Meta diária</span>
+        <select id="daily-goal-select">
+          <option value="10">10 XP – casual</option>
+          <option value="20" selected>20 XP – normal</option>
+          <option value="50">50 XP – intenso</option>
+        </select>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="js/data.js"></script>
+<script src="js/ai.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
